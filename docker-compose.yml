@@ -1,0 +1,42 @@
+version: '3.7'
+
+networks:
+  application:
+    driver: bridge
+
+services:
+  php:
+    build:
+      context: ./docker/php
+    container_name: php
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - application
+
+  nginx:
+    build:
+      context: ./docker/nginx
+    container_name: nginx
+    restart: unless-stopped
+    volumes_from:
+      - php
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/sites/:/etc/nginx/sites-available
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d
+    depends_on:
+      - php
+    ports:
+      - "${APP_PORT:-80}:80"
+      - "${APP_SECURE_PORT:-443}:443"
+    networks:
+      - application
+
+  composer:
+    image: composer
+    container_name: composer
+    volumes_from:
+      - php
+    working_dir: /var/www/html

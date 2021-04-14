@@ -1,0 +1,15 @@
+{
+    "name": "brayniverse/php-project-template",
+    "description": "GitHub repository template for PHP projects.",
+    "type": "project",
+    "require": {
+        "php": "^8.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christopher Bray",
+            "email": "christopher@brayniverse.com"
+        }
+    ]
+}
